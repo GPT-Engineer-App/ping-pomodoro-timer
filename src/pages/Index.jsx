@@ -19,26 +19,50 @@ const Index = () => {
   };
 
   const startPomodoro = () => {
+    const startTime = Date.now();
     setSeconds(25 * 60);
     setIsActive(true);
     setIsPomodoro(true);
+    audioRef.current.startTime = startTime;
   };
 
   const startBreak = () => {
+    const startTime = Date.now();
     setSeconds(5 * 60);
     setIsActive(true);
     setIsPomodoro(false);
+    audioRef.current.startTime = startTime;
   };
 
   useEffect(() => {
+    let interval = null;
     if (isActive) {
-      const interval = setInterval(() => {
-        setSeconds((seconds) => seconds - 1);
+      interval = setInterval(() => {
+        const currentTime = Date.now();
+        const elapsedTime = Math.floor((currentTime - audioRef.current.startTime) / 1000);
+        const remainingTime = isPomodoro ? 25 * 60 - elapsedTime : 5 * 60 - elapsedTime;
+        if (remainingTime >= 0) {
+          setSeconds(remainingTime);
+        } else {
+          clearInterval(interval);
+          setIsActive(false);
+          audioRef.current.play();
+          toast({
+            title: isPomodoro ? "Pomodoro Finished" : "Break Finished",
+            status: "info",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
       }, 1000);
-
-      return () => clearInterval(interval);
     }
-  }, [isActive]);
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [isActive, isPomodoro, toast]);
 
   useEffect(() => {
     if (seconds === 0 && isActive) {
