@@ -7,7 +7,7 @@ const Index = () => {
   const [isActive, setIsActive] = useState(false);
   const [isPomodoro, setIsPomodoro] = useState(true);
   const toast = useToast();
-  const audioRef = useRef(new Audio('GPTENG:get_audio("ping sound")'));
+  const audioRef = useRef(new Audio("/path/to/ping-sound.mp3"));
 
   const toggle = () => {
     setIsActive(!isActive);
@@ -104,6 +104,9 @@ const Index = () => {
           </Button>
           <Button leftIcon={<FaSyncAlt />} colorScheme="red" onClick={reset}>
             Reset
+          </Button>
+          <Button leftIcon={<FaPlay />} onClick={() => audioRef.current.play()}>
+            Test Ping
           </Button>
         </VStack>
       </VStack>
