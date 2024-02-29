@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { VStack, Button, Text, useToast, Box, Container, Heading } from "@chakra-ui/react";
+import { VStack, Button, Text, useToast, Box, Container, Heading, IconButton, useColorMode } from "@chakra-ui/react";
+import { FaSun, FaMoon } from "react-icons/fa";
 import { FaPlay, FaPause, FaSyncAlt, FaCoffee, FaBusinessTime } from "react-icons/fa";
 
 const Index = () => {
+  const { colorMode, toggleColorMode } = useColorMode();
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [isPomodoro, setIsPomodoro] = useState(true);
@@ -84,7 +86,8 @@ const Index = () => {
   };
 
   return (
-    <Container centerContent p={8}>
+    <Container centerContent p={8} position="relative">
+      <IconButton icon={colorMode === "light" ? <FaMoon /> : <FaSun />} isRound={true} size="md" alignSelf="flex-end" position="absolute" top={4} right={4} onClick={toggleColorMode} aria-label={`Switch to ${colorMode === "light" ? "dark" : "light"} mode`} />
       <VStack spacing={4} align="center">
         <Heading>Pomodoro Timer</Heading>
         <Box p={4} borderRadius="md" borderWidth="1px">
