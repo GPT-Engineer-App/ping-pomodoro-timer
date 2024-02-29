@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { VStack, Button, Text, useToast, Box, Container, Heading, IconButton, useColorMode } from "@chakra-ui/react";
+import { VStack, Button, Text, useToast, Box, Container, Heading, IconButton, useColorMode, useBreakpointValue, HStack } from "@chakra-ui/react";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { FaPlay, FaPause, FaSyncAlt, FaCoffee, FaBusinessTime } from "react-icons/fa";
 
@@ -95,20 +95,38 @@ const Index = () => {
             {displayTime()}
           </Text>
         </Box>
-        <VStack spacing={2}>
-          <Button leftIcon={<FaPlay />} colorScheme="green" onClick={startPomodoro}>
-            Start Pomodoro
-          </Button>
-          <Button leftIcon={<FaCoffee />} colorScheme="orange" onClick={startBreak}>
-            Start Break
-          </Button>
-          <Button leftIcon={isActive ? <FaPause /> : <FaPlay />} onClick={toggle}>
-            {isActive ? "Pause" : "Resume"}
-          </Button>
-          <Button leftIcon={<FaSyncAlt />} colorScheme="red" onClick={reset}>
-            Reset
-          </Button>
-        </VStack>
+        {useBreakpointValue({
+          base: (
+            <VStack spacing={2}>
+              <Button leftIcon={<FaPlay />} colorScheme="green" onClick={startPomodoro}>
+                Start Pomodoro
+              </Button>
+              <Button leftIcon={<FaCoffee />} colorScheme="orange" onClick={startBreak}>
+                Start Break
+              </Button>
+              <Button leftIcon={isActive ? <FaPause /> : <FaPlay />} onClick={toggle}>
+                {isActive ? "Pause" : "Resume"}
+              </Button>
+            </VStack>
+          ),
+          sm: (
+            <HStack spacing={2}>
+              <Button leftIcon={<FaPlay />} colorScheme="green" onClick={startPomodoro}>
+                Start Pomodoro
+              </Button>
+              <Button leftIcon={<FaCoffee />} colorScheme="orange" onClick={startBreak}>
+                Start Break
+              </Button>
+              <Button leftIcon={isActive ? <FaPause /> : <FaPlay />} onClick={toggle}>
+                {isActive ? "Pause" : "Resume"}
+              </Button>
+            </HStack>
+          ),
+        })}
+
+        <Button leftIcon={<FaSyncAlt />} colorScheme="red" onClick={reset}>
+          Reset
+        </Button>
       </VStack>
     </Container>
   );
