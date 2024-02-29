@@ -7,7 +7,7 @@ const Index = () => {
   const [isActive, setIsActive] = useState(false);
   const [isPomodoro, setIsPomodoro] = useState(true);
   const toast = useToast();
-  const audioRef = useRef(new Audio("/path/to/ping-sound.mp3"));
+  const audioRef = useRef(new Audio("https://assets.coderrocketfuel.com/pomodoro-times-up.mp3"));
 
   const toggle = () => {
     setIsActive(!isActive);
