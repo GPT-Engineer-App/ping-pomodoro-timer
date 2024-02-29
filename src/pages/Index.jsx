@@ -108,9 +108,6 @@ const Index = () => {
           <Button leftIcon={<FaSyncAlt />} colorScheme="red" onClick={reset}>
             Reset
           </Button>
-          <Button leftIcon={<FaPlay />} onClick={() => audioRef.current.play()}>
-            Test Ping
-          </Button>
         </VStack>
       </VStack>
     </Container>
