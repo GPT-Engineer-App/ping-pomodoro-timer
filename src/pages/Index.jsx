@@ -17,7 +17,9 @@ const Index = () => {
     if (isActive) {
       setPauseTime(seconds);
     } else {
-      audioRef.current.startTime = Date.now() - (25 * 60 - pauseTime) * 1000;
+      // Set the startTime to the current time minus the elapsed time when paused
+      audioRef.current.startTime = Date.now() - ((isPomodoro ? 25 * 60 : 5 * 60) - pauseTime) * 1000;
+      setPauseTime(0); // Reset pauseTime after resuming
     }
     setIsActive(!isActive);
   };
