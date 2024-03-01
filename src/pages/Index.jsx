@@ -55,10 +55,11 @@ const Index = () => {
         interval = setInterval(() => {
           const currentTime = Date.now();
           const elapsedTime = Math.floor((currentTime - audioRef.current.startTime) / 1000);
-          const remainingTime = isPomodoro ? 25 * 60 - elapsedTime : 5 * 60 - elapsedTime;
-          if (remainingTime >= 0) {
+          const remainingTime = (isPomodoro ? 25 * 60 : 5 * 60) - elapsedTime + (isActive ? 0 : pauseTime);
+          if (remainingTime > 0) {
             setSeconds(remainingTime);
           } else {
+            setSeconds(0);
             clearInterval(interval);
             setIsActive(false);
             audioRef.current.play();
