@@ -11,7 +11,14 @@ const Index = () => {
   const toast = useToast();
   const audioRef = useRef(new Audio("https://assets.coderrocketfuel.com/pomodoro-times-up.mp3"));
 
+  const [pauseTime, setPauseTime] = useState(0);
+
   const toggle = () => {
+    if (isActive) {
+      setPauseTime(seconds);
+    } else {
+      audioRef.current.startTime = Date.now() - (25 * 60 - pauseTime) * 1000;
+    }
     setIsActive(!isActive);
   };
 
@@ -39,24 +46,29 @@ const Index = () => {
   useEffect(() => {
     let interval = null;
     if (isActive) {
-      interval = setInterval(() => {
-        const currentTime = Date.now();
-        const elapsedTime = Math.floor((currentTime - audioRef.current.startTime) / 1000);
-        const remainingTime = isPomodoro ? 25 * 60 - elapsedTime : 5 * 60 - elapsedTime;
-        if (remainingTime >= 0) {
-          setSeconds(remainingTime);
-        } else {
-          clearInterval(interval);
-          setIsActive(false);
-          audioRef.current.play();
-          toast({
-            title: isPomodoro ? "Pomodoro Finished" : "Break Finished",
-            status: "info",
-            duration: 5000,
-            isClosable: true,
-          });
-        }
-      }, 1000);
+      if (pauseTime > 0) {
+        setSeconds(pauseTime);
+        setPauseTime(0);
+      } else {
+        interval = setInterval(() => {
+          const currentTime = Date.now();
+          const elapsedTime = Math.floor((currentTime - audioRef.current.startTime) / 1000);
+          const remainingTime = isPomodoro ? 25 * 60 - elapsedTime : 5 * 60 - elapsedTime;
+          if (remainingTime >= 0) {
+            setSeconds(remainingTime);
+          } else {
+            clearInterval(interval);
+            setIsActive(false);
+            audioRef.current.play();
+            toast({
+              title: isPomodoro ? "Pomodoro Finished" : "Break Finished",
+              status: "info",
+              duration: 5000,
+              isClosable: true,
+            });
+          }
+        }, 1000);
+      }
     }
 
     return () => {
