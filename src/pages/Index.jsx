@@ -45,6 +45,14 @@ const Index = () => {
     audioRef.current.startTime = startTime;
   };
 
+  const startLongBreak = () => {
+    const startTime = Date.now();
+    setSeconds(10 * 60);
+    setIsActive(true);
+    setIsPomodoro(false);
+    audioRef.current.startTime = startTime;
+  };
+
   useEffect(() => {
     let interval = null;
     if (isActive) {
@@ -55,7 +63,7 @@ const Index = () => {
         interval = setInterval(() => {
           const currentTime = Date.now();
           const elapsedTime = Math.floor((currentTime - audioRef.current.startTime) / 1000);
-          const remainingTime = (isPomodoro ? 25 * 60 : 5 * 60) - elapsedTime + (isActive ? 0 : pauseTime);
+          const remainingTime = (isPomodoro ? 25 * 60 : seconds === 5 * 60 ? 5 * 60 : 10 * 60) - elapsedTime + (isActive ? 0 : pauseTime);
           if (remainingTime > 0) {
             setSeconds(remainingTime);
           } else {
@@ -119,6 +127,9 @@ const Index = () => {
               <Button leftIcon={<FaCoffee />} colorScheme="orange" onClick={startBreak}>
                 Start Break
               </Button>
+              <Button leftIcon={<FaBusinessTime />} colorScheme="purple" onClick={startLongBreak}>
+                Start Long Break
+              </Button>
               <Button leftIcon={isActive ? <FaPause /> : <FaPlay />} onClick={toggle}>
                 {isActive ? "Pause" : "Resume"}
               </Button>
@@ -131,6 +142,9 @@ const Index = () => {
               </Button>
               <Button leftIcon={<FaCoffee />} colorScheme="orange" onClick={startBreak}>
                 Start Break
+              </Button>
+              <Button leftIcon={<FaBusinessTime />} colorScheme="purple" onClick={startLongBreak}>
+                Start Long Break
               </Button>
               <Button leftIcon={isActive ? <FaPause /> : <FaPlay />} onClick={toggle}>
                 {isActive ? "Pause" : "Resume"}
